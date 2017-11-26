@@ -7,7 +7,7 @@ Make trada great again !!
 
 # What can I find here  
 
-Trada is an web application for e-commercial especialy for people using social network as their main source of advertising. This application will be developed with NodeJS technology, along with MongoDB as database.
+The unemployment rate is high in every country which is a burden for any economy. On the other hand, companies can't find employee who meet their requirements. Trada is here as a brigde between 2 sides providing consultant, creating community and certificate the quality of applicants. People need to find suitable job not high salary job and that is our main goal.
 
 ## References  
 * [Building MEAN app from Scratch](https://www.youtube.com/watch?v=PFP0oXNNveg)
