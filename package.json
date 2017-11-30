@@ -1,0 +1,25 @@
+{
+  "name": "trada",
+  "version": "1.0.0",
+  "description": "Make trada great again!",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "express-validator": "^4.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avengerpb/trada2.0.git"
+  },
+  "author": "sieunhanvodich and avengerpb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avengerpb/trada2.0/issues"
+  },
+  "homepage": "https://github.com/avengerpb/trada2.0#readme"
+}

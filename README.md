@@ -12,8 +12,8 @@ The unemployment rate is high in every country which is a burden for any economy
 ## References  
 * [Building MEAN app from Scratch](https://www.youtube.com/watch?v=PFP0oXNNveg)
 * [What is MongoDB](http://vietjack.com/mongodb/index.jsp)
-* [What is NodeJS](http://vietjack.com/angularjs/index.jsp)
-* [WHat is AngularJS](http://vietjack.com/nodejs/index.jsp)
+* [What is AngularJS](http://vietjack.com/angularjs/index.jsp)
+* [WHat is NodeJS](http://vietjack.com/nodejs/index.jsp)
 
 ## Branches  
 There will be 3 initial branches: development, release and stable branches. Please PR only to development branch.
