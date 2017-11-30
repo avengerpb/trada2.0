@@ -8,7 +8,9 @@
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "express-validator": "^4.3.0",
-    "mongojs": "^2.4.1"
+    "mongojs": "^2.4.1",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1"
   },
   "devDependencies": {},
   "scripts": {
@@ -16,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/avengerpb/trada2.0.git"
+    "url": "https://github.com/avengerpb/trada2.0.git"
   },
   "author": "sieunhanvodich and avengerpb",
   "license": "ISC",

@@ -1,12 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
-const mongojs = require("mongojs");
-const expressValidator = require("express-validator");
+// const mongojs = require("mongojs");
+// const expressValidator = require("express-validator");
 
 let index = require("./routes/index");
 let app = express();
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 8000));
 
 //view engine
 app.set('view engine', 'ejs');
