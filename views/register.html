@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trada | Register</title>
+</head>
+<body>
+	<% if(errors) { %>
+		<ul>
+			<% errors.forEach(function(error) { %>
+				<li><%= error.msg %></li>
+			<% }) %>
+		</ul>
+	<% } %>
+	<form method="POST" action="/register/new">
+		<label>User name</label>
+		<input type="text" name="username">
+		<br>
+		<label>Email</label>
+		<input type="text" name="email">
+		<br>
+		<label>Password</label>
+		<input type="password" name="password">
+		<br><br>
+		<input type="submit" value="Register">
+	</form>
+</body>
+</html>
