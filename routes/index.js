@@ -3,7 +3,9 @@ const router = express.Router();
 const passport = require('passport');
 const FbStrategy = require('passport-facebook').Strategy;
 const expressSession = require('express-session');
-// const mongojs = require('mongojs');
+const mongojs = require('mongojs');
+
+let db = mongojs('mongodb://sieunhan:trada1234@ds127978.mlab.com:27978/trada', ['User']);
 
 const FACEBOOK_APP_ID ='1943048642627190',
 	  FACEBOOK_APP_SECRET = '348d34c6bff7b6077e455d474142deeb';
@@ -45,6 +47,17 @@ router.get('/', (req, res, next) => {
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email'}));
 
 router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, res) => {
+	let user = req.user;
+	let newUser = {
+		username: user.username,
+		email: user.emails[0].value,
+		fblink: user.profileUrl,
+		avatar: user.photos[0].value
+	}
+	db.User.insert(newUser, (err, user) => {
+		if(err) { throw err; }
+		// res.json(user);
+	});
 	res.redirect('/');
 });
 
