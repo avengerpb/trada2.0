@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Trada | Homepage</title>
-    </head>
-    <body>
-        <h1>Hello world</h1>
-        <a href="/auth/facebook"> Login with facebok </a>
-    </body>
+<head>
+	<title>Trada | HomePage</title>
+</head>
+<body>
+	<h1>Trada | Homepage</h1>
+	<% if(!user) { %>
+		<a href="/auth/facebook"> Login with facebok </a>
+	<% } else { %>
+		ID: <%= user.id %><br/>
+		Name: <%= user.displayName %><br/>
+		<% if (user.emails) { %>
+			Email: <%= user.emails[0].value %><br/>
+		<% } %>
+		PhotoUrl: <%= user.photos[0].value %> <br/>
+		Email: <%= user.emails[0].value  %> <br/>
+		Facebook link: <%= user.profileUrl %> 
+	<% } %>
+</body>
 </html>
