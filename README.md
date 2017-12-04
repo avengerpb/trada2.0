@@ -22,4 +22,5 @@ If you're interested in contributing, you're awesome! Isn't OSS great? Please re
 This project follows the convention of [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/), a branching model for product development, so all the Pull requests must use this model to be taken in consideration.
 
 ## Issues
-Issues will be managed by initators
+You can check newest or making new issue here https://github.com/avengerpb/trada2.0/issues . Raise hand when starting doing an issue.
+ 
