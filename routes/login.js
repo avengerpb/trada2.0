@@ -32,37 +32,44 @@ router.use(expressValidator({
 }));
 
 router.get('/', (req, res, next) => {
-    res.render('register.html');
+    res.render('login.html');
 });
 
-router.post('/new', (req, res) => {
-	req.checkBody('username', 'User name is required').notEmpty();
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('email', 'This email is not valid').isEmail();
+router.post('/', (req, res) => {
+	req.checkBody('email_uname', 'Email is required').notEmpty();
 	req.checkBody('password', 'Password is required').notEmpty();
-	req.assert('cpassword', 'Passwords do not match').equals(req.body.password);
 
 	// let bcrypt = require('bcryptjs');
-	let salt = bcrypt.genSaltSync(10);
-	let hash = bcrypt.hashSync(req.body.password, salt);
+	// let salt = bcrypt.genSaltSync(10);
+	// let hash = bcrypt.hashSync(req.body.password, salt);
 
 	let errors = req.validationErrors();
 	if(errors) {
-		res.render('register.html', {
+		res.render('login.html', {
 			errors: errors
 		});
 	} else {
-		let newUser = {
-			username: req.body.username,
-			email: req.body.email,
-			password: hash,
-			user_type: 'Normal'
-		}
-		db.User.insert(newUser, (err, user) => {
-			if(err) { throw err; }
-			res.json(user);
+		db.User.findOne({
+			$or: [
+				{'email': req.body.email_uname},
+				{'username': req.body.email_uname}
+			]
+		}, (err, docs) => {
+			if(err) throw err;
+			if(!docs) {
+				console.log("User doesn't exist");
+				res.redirect('/');
+			} else {
+				let isSame = bcrypt.compareSync(req.body.password, docs.password);
+				if(isSame == false){
+					console.log('Wrong password!');
+					res.redirect('/');
+				} else {
+					console.log('Logged in');	
+					res.redirect('/');
+				}
+			}
 		});
-		console.log('SUCCESS');
 	}
 });
 

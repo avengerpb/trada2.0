@@ -6,7 +6,9 @@
 <body>
 	<h1>Trada | Homepage</h1>
 	<% if(!user) { %>
-		<a href="/auth/facebook"> Login with facebok </a>
+		<a href="/auth/facebook"> Login with facebok </a> <br>
+		<a href="/register"> Register </a> <br>
+		<a href="/login"> Login </a> <br>
 	<% } else { %>
 		ID: <%= user.id %><br/>
 		Name: <%= user.displayName %><br/>

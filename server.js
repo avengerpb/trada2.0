@@ -6,6 +6,7 @@ const path = require("path");
 
 let index = require("./routes/index");
 let register = require('./routes/register');
+let login = require('./routes/login');
 let app = express();
 app.set('port', (process.env.PORT || 8000));
 
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/', index);
 app.use('/register', register);
+app.use('/login', login);
 
 app.listen(app.get('port'), function() {
   console.log(`Node app is running at port: ${app.get('port')}`);
