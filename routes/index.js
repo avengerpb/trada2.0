@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 const expressValidator = require('express-validator');
 
 let db = mongojs('mongodb://sieunhan:trada1234@ds127978.mlab.com:27978/trada', ['User']);
-
+let session;
 
 //FACEBOOK LOGIN
 const FACEBOOK_APP_ID ='1943048642627190',
@@ -45,7 +45,8 @@ let fbCallback = (accessToken, refreshToken, profile, cb) => {
 passport.use(new FbStrategy(fbOption, fbCallback));
 
 router.get('/', (req, res, next) => {
-    res.render('index.html', {user: req.user});
+	session = req.session;
+	res.render('index.html', {user: req.user, local_user: session.user});
 });
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email'}));
@@ -132,7 +133,9 @@ router.post('/login', (req, res) => {
 					console.log('Wrong password!');
 					res.redirect('/');
 				} else {
-					console.log('Logged in');	
+					console.log('Logged in');
+					session = req.session;
+					session.user = user;	
 					res.redirect('/');
 				}
 			}
@@ -140,6 +143,16 @@ router.post('/login', (req, res) => {
 	}
 });
 //END LOCAL LOGIN
+
+
+//CHECK LOGGED IN
+module.exports.isLoggedIn = (req, res, next) => {
+	if(req.isAuthenticated()){
+		return next();
+	}
+	res.redirect('/');
+}
+//END CHECK LOGGED IN
 
 
 //USER REGISTER
@@ -172,7 +185,7 @@ router.post('/register', (req, res) => {
 		}
 		db.User.insert(newUser, (err, user) => {
 			if(err) { throw err; }
-			res.json(user);
+			res.redirect('/login');
 		});
 		console.log('SUCCESS');
 	}
@@ -182,9 +195,13 @@ router.post('/register', (req, res) => {
 
 //LOGOUT
 router.get('/logout', (req, res) => {
-	req.logout();
-	res.redirect('/');
-	console.log('LOGGED OUT');
+	req.session.destroy((err) => {
+	  if(err) {
+	    throw err;
+	  } else {
+	    res.redirect('/');
+	  }
+	});
 });
 //END LOGOUT
 
