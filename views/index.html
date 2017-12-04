@@ -6,9 +6,10 @@
 <body>
 	<h1>Trada | Homepage</h1>
 	<% if(!user) { %>
-		<a href="/auth/facebook"> Login with facebok </a> <br>
 		<a href="/register"> Register </a> <br>
+		<a href="/auth/facebook"> Login with facebook </a> <br>
 		<a href="/login"> Login </a> <br>
+		<a href="/logout"> Logout </a> <br>
 	<% } else { %>
 		ID: <%= user.id %><br/>
 		Name: <%= user.displayName %><br/>
@@ -16,7 +17,8 @@
 			Email: <%= user.emails[0].value %><br/>
 		<% } %>
 		PhotoUrl: <%= user.photos[0].value %> <br/>
-		Facebook link: <%= user.profileUrl %> 
+		Facebook link: <%= user.profileUrl %> <br>
+		<a href="/logout"> Logout </a> <br>
 	<% } %>
 </body>
 </html>
