@@ -8,7 +8,6 @@ const bcrypt = require('bcryptjs');
 
 let db = mongojs('mongodb://sieunhan:trada1234@ds127978.mlab.com:27978/trada', ['User']);
 
-
 //global variable
 router.use(function(req, res, next){
 	res.locals.errors = null;
@@ -41,6 +40,7 @@ router.post('/new', (req, res) => {
 	req.checkBody('email', 'Email is required').notEmpty();
 	req.checkBody('email', 'This email is not valid').isEmail();
 	req.checkBody('password', 'Password is required').notEmpty();
+	req.assert('cpassword', 'Passwords do not match').equals(req.body.password);
 
 	let bcrypt = require('bcryptjs');
 	let salt = bcrypt.genSaltSync(10);
@@ -55,7 +55,8 @@ router.post('/new', (req, res) => {
 		let newUser = {
 			username: req.body.username,
 			email: req.body.email,
-			password: hash
+			password: hash,
+			user_type: 'Normal'
 		}
 		db.User.insert(newUser, (err, user) => {
 			if(err) { throw err; }

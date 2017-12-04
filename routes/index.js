@@ -49,16 +49,27 @@ router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email'}
 router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, res) => {
 	let user = req.user;
 	let newUser = {
-		username: user.username,
+		facebook_id: user.id,
+		username: user.displayName,
 		email: user.emails[0].value,
 		fblink: user.profileUrl,
-		avatar: user.photos[0].value
+		avatar: user.photos[0].value,
+		user_type: 'Facebook'
 	}
-	db.User.insert(newUser, (err, user) => {
-		if(err) { throw err; }
-		// res.json(user);
+	db.User.findOne({
+		'facebook_id': user.id
+	}, (err, docs) => {
+		if(err) throw err;
+		if(!docs) {
+			db.User.insert(newUser, (err, user) => {
+				if(err) { throw err; }
+				// res.json(user);
+			});
+			res.redirect('/');
+		} else {
+			res.redirect('/');
+		}
 	});
-	res.redirect('/');
 });
 
 module.exports = router;
