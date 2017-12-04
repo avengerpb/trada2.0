@@ -15,8 +15,11 @@ The unemployment rate is high in every country which is a burden for any economy
 * [What is NodeJS](http://vietjack.com/angularjs/index.jsp)
 * [WHat is AngularJS](http://vietjack.com/nodejs/index.jsp)
 
-## Branches  
-There will be 3 initial branches: development, release and stable branches. Please PR only to development branch.
+## Contributing
+
+If you're interested in contributing, you're awesome! Isn't OSS great? Please read the [contribution guide](./CONTRIBUTING.md) for details on the process for submitting pull requests, it's not as hard as it sounds. :wink:
+
+This project follows the convention of [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/), a branching model for product development, so all the Pull requests must use this model to be taken in consideration.
 
 ## Issues
 Issues will be managed by initators
