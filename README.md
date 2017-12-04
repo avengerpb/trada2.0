@@ -17,7 +17,7 @@ The unemployment rate is high in every country which is a burden for any economy
 
 ## Contributing
 
-If you're interested in contributing, you're awesome! Isn't OSS great? Please read the [contribution guide](./CONTRIBUTING.md) for details on the process for submitting pull requests, it's not as hard as it sounds. :wink:
+If you're interested in contributing, you're awesome! Isn't OSS great? Please read the [contribution guide](./Contributing.md) for details on the process for submitting pull requests, it's not as hard as it sounds. :wink:
 
 This project follows the convention of [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/), a branching model for product development, so all the Pull requests must use this model to be taken in consideration.
 
