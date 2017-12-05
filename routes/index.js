@@ -6,6 +6,7 @@ const expressSession = require('express-session');
 const mongojs = require('mongojs');
 const bcrypt = require('bcryptjs');
 const expressValidator = require('express-validator');
+const flash = require('connect-flash');
 
 let db = mongojs('mongodb://sieunhan:trada1234@ds127978.mlab.com:27978/trada', ['User']);
 let session;
@@ -29,14 +30,17 @@ passport.deserializeUser(function(obj, cb) {
   cb(null, obj);
 });
 
+
 router.use(expressSession({
   secret: 'keyboard cat',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
 }));
 
 router.use(passport.initialize());
 router.use(passport.session());
+
+router.use(flash());
 
 let fbCallback = (accessToken, refreshToken, profile, cb) => {
 	return cb(null, profile);
@@ -54,8 +58,8 @@ router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email'}
 router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, res) => {
 	let user = req.user;
 	let newUser = {
-		facebook_id: user.id,
-		username: user.displayName,
+		username: user.id,
+		fullname: user.displayName,
 		email: user.emails[0].value,
 		fblink: user.profileUrl,
 		avatar: user.photos[0].value,
@@ -83,6 +87,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, r
 //global variable
 router.use(function(req, res, next){
 	res.locals.errors = null;
+	// res.locals.register_messages = req.flash('register_messages');
 	next();
 })
 
@@ -145,19 +150,9 @@ router.post('/login', (req, res) => {
 //END LOCAL LOGIN
 
 
-//CHECK LOGGED IN
-module.exports.isLoggedIn = (req, res, next) => {
-	if(req.isAuthenticated()){
-		return next();
-	}
-	res.redirect('/');
-}
-//END CHECK LOGGED IN
-
-
 //USER REGISTER
 router.get('/register', (req, res, next) => {
-    res.render('register.html');
+    res.render('register.html', {register_messages: req.flash('register_messages')});
 });
 
 router.post('/register', (req, res) => {
@@ -183,11 +178,30 @@ router.post('/register', (req, res) => {
 			password: hash,
 			user_type: 'Normal'
 		}
-		db.User.insert(newUser, (err, user) => {
-			if(err) { throw err; }
-			res.redirect('/login');
+		db.User.findOne({
+			$or: [
+				{'username': req.body.username},
+				{'email': req.body.email}
+			]
+		}, (err, user) => {
+			if(err) throw err;
+			if(!user) {
+				db.User.insert(newUser, (err, user) => {
+					if(err) { throw err; }
+					req.flash('register_messages', 'Registration succeed!');
+					res.redirect('/register');
+				});
+			} else {
+				if(user.username == req.body.username) {
+					req.flash('register_messages', 'This username has already existed');
+					res.redirect('/register');
+				}
+				if(user.email == req.body.email){
+					req.flash('register_messages', 'This email has already existed');
+					res.redirect('/register');
+				}
+			}
 		});
-		console.log('SUCCESS');
 	}
 });
 //END USER REGISTER

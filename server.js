@@ -5,6 +5,7 @@ const path = require("path");
 // const expressValidator = require("express-validator");
 
 let index = require("./routes/index");
+let profile = require("./routes/profile");
 let app = express();
 app.set('port', (process.env.PORT || 8000));
 
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/', index);
+app.use('/profile', profile);
 
 app.listen(app.get('port'), function() {
   console.log(`Node app is running at port: ${app.get('port')}`);

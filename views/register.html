@@ -11,6 +11,9 @@
 			<% }) %>
 		</ul>
 	<% } %>
+	<% if(register_messages.length > 0) { %>
+		<%= register_messages %>
+	<% } %>
 	<form method="POST" action="/register">
 		<label>User name</label>
 		<input type="text" name="username">
