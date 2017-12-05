@@ -21,8 +21,17 @@ let isLoggedIn = (req, res, next) => {
 
 
 //PROFILE PAGE
-router.get('/', isLoggedIn, (req, res, next) => {
-	res.render('profile.html');
+router.get('/:username', isLoggedIn, (req, res, next) => {
+	db.User.findOne({
+		username: req.params.username
+	}, (err, user) => {
+		if(err) throw err;
+		if(user){
+			res.render('profile.html', {user: user});
+		} else {
+			res.redirect('/login');
+		}
+	});
 });
 
 module.exports = router;

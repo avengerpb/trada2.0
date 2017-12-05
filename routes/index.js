@@ -87,7 +87,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, r
 //global variable
 router.use(function(req, res, next){
 	res.locals.errors = null;
-	// res.locals.register_messages = req.flash('register_messages');
+	res.locals.register_messages = req.flash('register_messages');
 	next();
 })
 
