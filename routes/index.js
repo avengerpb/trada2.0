@@ -2,11 +2,8 @@ const express = require("express");
 const router = express.Router();
 const passport = require('passport');
 const FbStrategy = require('passport-facebook').Strategy;
-const expressSession = require('express-session');
 const mongojs = require('mongojs');
 const bcrypt = require('bcryptjs');
-const expressValidator = require('express-validator');
-const flash = require('connect-flash');
 
 let db = mongojs('mongodb://sieunhan:trada1234@ds127978.mlab.com:27978/trada', ['User']);
 let session;
@@ -31,16 +28,9 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 
-router.use(expressSession({
-  secret: 'keyboard cat',
-  resave: true,
-  saveUninitialized: true,
-}));
-
 router.use(passport.initialize());
 router.use(passport.session());
 
-router.use(flash());
 
 let fbCallback = (accessToken, refreshToken, profile, cb) => {
 	return cb(null, profile);
@@ -50,7 +40,7 @@ passport.use(new FbStrategy(fbOption, fbCallback));
 
 router.get('/', (req, res, next) => {
 	session = req.session;
-	res.render('index.html', {user: req.user, local_user: session.user});
+	res.render('index.html', {user: session.user});
 });
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email'}));
@@ -66,7 +56,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, r
 		user_type: 'Facebook'
 	}
 	db.User.findOne({
-		'facebook_id': user.id
+		'username': user.id
 	}, (err, docs) => {
 		if(err) throw err;
 		if(!docs) {
@@ -76,6 +66,9 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, r
 			});
 			res.redirect('/');
 		} else {
+			session = req.session;
+			session.user = docs;
+			// console.log(req.session);
 			res.redirect('/');
 		}
 	});
@@ -84,30 +77,6 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, r
 
 
 //LOCAL LOGIN
-//global variable
-router.use(function(req, res, next){
-	res.locals.errors = null;
-	res.locals.register_messages = req.flash('register_messages');
-	next();
-})
-
-// express validator
-router.use(expressValidator({
-	errorFormatter: function(param, msg, value) {
-		let namespace = param.split('.')
-		, root = namespace.shift()
-		, formParam = root;
-		while(namespace.length) {
-			formParam += '[' + namespace.shift() + ']';
-		}
-		return {
-			param: formParam,
-			msg: msg,
-			value: value
-		}
-	}
-}));
-
 router.get('/login', (req, res, next) => {
     res.render('login.html');
 });
