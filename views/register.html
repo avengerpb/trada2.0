@@ -11,6 +11,9 @@
 			<% }) %>
 		</ul>
 	<% } %>
+	<% if(register_messages) { %>
+		<%= register_messages %>
+	<% } %>
 	<form method="POST" action="/register">
 		<label>User name</label>
 		<input type="text" name="username">
@@ -24,6 +27,7 @@
 		<label>Confirm password</label>
 		<input type="password" name="cpassword">
 		<br><br>
+		<a href="/"><input type="button" name="back" value="Back"></a>
 		<input type="submit" value="Register">
 	</form>
 </body>

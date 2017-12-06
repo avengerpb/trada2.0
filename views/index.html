@@ -4,28 +4,15 @@
 	<title>Trada | HomePage</title>
 </head>
 <body>
-	<h1>Trada | Homepage</h1> 
-	<% if(user){ %>
-		ID: <%= user.id %><br/>
-		Name: <%= user.displayName %><br/>
-		<% if (user.emails) { %>
-			Email: <%= user.emails[0].value %><br/>
-		<% } %>
-		PhotoUrl: <%= user.photos[0].value %> <br/>
-		Facebook link: <%= user.profileUrl %> <br>
-		<a href="/logout"> Logout </a> <br>
-	<% } 
-	if(local_user){ %>
-		ID: <%= local_user._id %> <br>
-		Username: <%= local_user.username %> <br>
-		Email: <%= local_user.email %> <br>
-		User type: <%= local_user.user_type %> <br>
-		<a href="/logout"> Logout </a> <br>
-	<% } 
-	if(!user && !local_user) { %>
+	<h1>Trada | Homepage</h1>  
+	<% if(!user) { %>
 		<a href="/register"> Register </a> <br>
 		<a href="/auth/facebook"> Login with facebook </a> <br>
 		<a href="/login"> Login </a> <br>
+	<% } else { %>
+		<h2>Welcome! </h2>
+		<a href="/logout"> Logout </a> <br>
+		<a href="/profile/<%= user._id %>"> Profile </a>
 	<% } %>
 </body>
 </html>

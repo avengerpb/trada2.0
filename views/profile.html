@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Profile User</title>
+</head>
+<body>
+	<h1>Trada | Profile</h1>
+	<% if(user.avatar) { %>
+		<img src="<%= user.avatar %>"> <br>
+	<% } %>
+	<strong>Full name: </strong> <%= user.fullname %> <br>
+	<strong>User name: </strong> <%= user.username %> <br>
+	<strong>Email: </strong> <%= user.email %> <br>
+	<strong>User type: </strong> <%= user.user_type %> <br>
+	<% if(user.fblink) { %>
+		<a href="<%= user.fblink %>"> Facebook </a><br>
+	<% } %>
+	<a href="/logout"> Logout </a> <br>
+	<a href="/profile/<%= user._id %>/edit"> Edit </a>
+</body>
+</html>
