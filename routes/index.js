@@ -121,7 +121,7 @@ router.post('/login', (req, res) => {
 
 //USER REGISTER
 router.get('/register', (req, res, next) => {
-    res.render('register.html', {register_messages: req.flash('register_messages')});
+    res.render('register.html', {message: req.flash('message')});
 });
 
 router.post('/register', (req, res) => {
@@ -157,16 +157,16 @@ router.post('/register', (req, res) => {
 			if(!user) {
 				db.User.insert(newUser, (err, user) => {
 					if(err) { throw err; }
-					req.flash('register_messages', 'Registration succeed!');
+					req.flash('message', 'Registration succeed!');
 					res.redirect('/register');
 				});
 			} else {
 				if(user.username == req.body.username) {
-					req.flash('register_messages', 'This username has already existed');
+					req.flash('message', 'This username has already existed');
 					res.redirect('/register');
 				}
 				if(user.email == req.body.email){
-					req.flash('register_messages', 'This email has already existed');
+					req.flash('message', 'This email has already existed');
 					res.redirect('/register');
 				}
 			}
