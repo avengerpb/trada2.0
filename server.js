@@ -53,10 +53,9 @@ app.use(expressValidator({
 //global variable
 app.use(function(req, res, next){
 	res.locals.errors = null;
-	res.locals.register_messages = req.flash('register_messages');
-	res.locals.update_msg = req.flash('update_msg');
+	res.locals.message = req.flash('message');
 	next();
-})
+});
 
 app.use('/', index);
 app.use('/profile', profile);
