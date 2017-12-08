@@ -11,8 +11,10 @@
 			<% }) %>
 		</ul>
 	<% } %>
-	<% if(message) { %>
-		<%= message %>
+	<% if(signupMsgs.length > 0) { %>
+		<ul>
+			<li> <%= signupMsgs %> </li>
+		</ul>
 	<% } %>
 	<form method="POST" action="/register">
 		<label>User name</label>

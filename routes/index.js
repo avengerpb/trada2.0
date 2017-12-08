@@ -1,16 +1,16 @@
-const express = require("express");
-const router = express.Router();
-const passport = require('passport');
-const FbStrategy = require('passport-facebook').Strategy;
-const mongojs = require('mongojs');
-const bcrypt = require('bcryptjs');
+let express = require("express");
+let router = express.Router();
+let passport = require('passport');
+let FbStrategy = require('passport-facebook').Strategy;
+let mongojs = require('mongojs');
+let bcrypt = require('bcryptjs');
 
 let db = mongojs('mongodb://sieunhan:trada1234@ds127978.mlab.com:27978/trada', ['User']);
 let session;
 
 //FACEBOOK LOGIN
-const FACEBOOK_APP_ID ='1943048642627190',
-	  FACEBOOK_APP_SECRET = '348d34c6bff7b6077e455d474142deeb';
+let FACEBOOK_APP_ID ='1943048642627190',
+	FACEBOOK_APP_SECRET = '348d34c6bff7b6077e455d474142deeb';
 
 let fbOption = {
 	'clientID': FACEBOOK_APP_ID,
@@ -121,7 +121,8 @@ router.post('/login', (req, res) => {
 
 //USER REGISTER
 router.get('/register', (req, res, next) => {
-    res.render('register.html', {message: req.flash('message')});
+	// console.log(req.session);
+    res.render('register.html', {signupMsgs: req.flash('signupMsgs')});
 });
 
 router.post('/register', (req, res) => {
@@ -157,16 +158,19 @@ router.post('/register', (req, res) => {
 			if(!user) {
 				db.User.insert(newUser, (err, user) => {
 					if(err) { throw err; }
-					req.flash('message', 'Registration succeed!');
-					res.redirect('/register');
+					console.log('Registration succeed!');
+					req.flash('signupMsgs', 'Registration succeed!');
+					res.redirect('/');
 				});
 			} else {
 				if(user.username == req.body.username) {
-					req.flash('message', 'This username has already existed');
+					console.log('This username has already existed!');
+					req.flash('signupMsgs', 'This username has already existed!');
 					res.redirect('/register');
 				}
 				if(user.email == req.body.email){
-					req.flash('message', 'This email has already existed');
+					console.log('This email has already existed!');
+					req.flash('signupMsgs', 'This email has already existed!');
 					res.redirect('/register');
 				}
 			}

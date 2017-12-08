@@ -5,8 +5,10 @@
 </head>
 <body>
 	<h1>Trada | Edit Profile</h1>
-	<% if(message) { %>
-		<%= message %>
+	<% if(editMsgs.length > 0) { %>
+		<ul>
+			<li> <%= editMsgs %> </li>
+		</ul>
 	<% } %>
 	<form method="POST", action="/profile/<%= user._id %>/edit">
 		<% if(user.fullname) { %>
