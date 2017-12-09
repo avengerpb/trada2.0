@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trada | Add_item</title>
+</head>
+<body>
+	<% if(errors) { %>
+		<ul>
+			<% errors.forEach(function(error) { %>
+				<li><%= error.msg %></li>
+			<% }) %>
+		</ul>
+	<% } %>
+	<% if(flash.signupMsgs) { %>
+		<ul>
+			<li> <%= flash.signupMsgs %> </li>
+		</ul>
+	<% } %>
+	<form method="POST" action="/register">
+		<label>Item name</label>
+		<input type="text" name="item">
+		<br>
+		<label>Price</label>
+		<input type="text" name="price">
+		<br>
+		<label>Description</label>
+		<input type="text" name="description">
+		<br>
+		<label>Comment</label>
+		<input type="comment" name="comment">
+		<br><br>
+		<a href="/market"><input type="button" name="back" value="Back"></a>
+		<input type="submit" value="Add Item">
+	</form>
+</body>
+</html>

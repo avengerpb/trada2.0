@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trada | Market Place</title>
+</head>
+<body>
+	<% if(errors) { %>
+		<ul>
+			<% errors.forEach(function(error) { %>
+				<li><%= error.msg %></li>
+			<% }) %>
+		</ul>
+	<% } %>
+	<form method="POST" action="/market/delete_item">
+		<label>Item name</label>
+		<input type="text" name="item_name">
+		<br>
+		<a href="/market"><input type="button" name="back" value="Back"></a>
+		<input type="submit" value="Delete item">
+	</form>
+</body>
+</html>

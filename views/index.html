@@ -4,11 +4,12 @@
 	<title>Trada | HomePage</title>
 </head>
 <body>
-	<h1>Trada | Homepage</h1>  
+	<h1>Trada | Homepage</h1>
 	<% if(!user) { %>
 		<a href="/register"> Register </a> <br>
 		<a href="/auth/facebook"> Login with facebook </a> <br>
 		<a href="/login"> Login </a> <br>
+		<a href="/market"> Marketplace</a> <br>
 	<% } else { %>
 		<h2>Welcome! </h2>
 		<a href="/logout"> Logout </a> <br>

@@ -8,6 +8,7 @@ let expressValidator = require("express-validator");
 
 let index = require("./routes/index");
 let profile = require("./routes/profile");
+let market = require("./routes/market");
 let app = express();
 app.set('port', (process.env.PORT || 8000));
 
@@ -63,6 +64,7 @@ app.use((req, res, next) => {
 
 app.use('/', index);
 app.use('/profile', profile);
+app.use('/market', market);
 
 app.listen(app.get('port'), function() {
   console.log(`Node app is running at port: ${app.get('port')}`);
