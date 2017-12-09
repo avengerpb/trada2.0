@@ -109,7 +109,7 @@ router.post('/login', (req, res) => {
 				} else {
 					console.log('Logged in');
 					session = req.session;
-					session.user = user;	
+					session.user = user;
 					res.redirect('/');
 				}
 			}
@@ -122,7 +122,7 @@ router.post('/login', (req, res) => {
 //USER REGISTER
 router.get('/register', (req, res, next) => {
 	// console.log(req.session);
-    res.render('register.html', {signupMsgs: req.flash('signupMsgs')});
+    res.render('register.html');
 });
 
 router.post('/register', (req, res) => {
@@ -159,18 +159,18 @@ router.post('/register', (req, res) => {
 				db.User.insert(newUser, (err, user) => {
 					if(err) { throw err; }
 					console.log('Registration succeed!');
-					req.flash('signupMsgs', 'Registration succeed!');
+					res.flash('signupMsgs', 'Registration succeed!');
 					res.redirect('/');
 				});
 			} else {
 				if(user.username == req.body.username) {
 					console.log('This username has already existed!');
-					req.flash('signupMsgs', 'This username has already existed!');
+					res.flash('signupMsgs', 'This username has already existed!');
 					res.redirect('/register');
 				}
 				if(user.email == req.body.email){
 					console.log('This email has already existed!');
-					req.flash('signupMsgs', 'This email has already existed!');
+					res.flash('signupMsgs', 'This email has already existed!');
 					res.redirect('/register');
 				}
 			}

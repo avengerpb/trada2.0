@@ -11,9 +11,9 @@
 			<% }) %>
 		</ul>
 	<% } %>
-	<% if(signupMsgs.length > 0) { %>
+	<% if(flash.signupMsgs) { %>
 		<ul>
-			<li> <%= signupMsgs %> </li>
+			<li> <%= flash.signupMsgs %> </li>
 		</ul>
 	<% } %>
 	<form method="POST" action="/register">

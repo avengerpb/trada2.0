@@ -3,7 +3,7 @@ let bodyParser = require("body-parser");
 let path = require("path");
 let expressSession = require('express-session');
 let cookieParser = require('cookie-parser');
-let flash = require('connect-flash');
+let flash = require('express-flash-2');
 let expressValidator = require("express-validator");
 
 let index = require("./routes/index");
@@ -51,13 +51,13 @@ app.use(expressValidator({
 			value: value
 		}
 	}
-}));	
+}));
 
 //global variable
 app.use((req, res, next) => {
 	res.locals.errors = null;
-	res.locals.signupMsgs = req.flash('signupMsg');
-	res.locals.editMsgs = req.flash('editMsgs');
+	// res.locals.signupMsgs = res.flash('signupMsg');
+	// res.locals.editMsgs = res.flash('editMsgs');
 	next();
 });
 
