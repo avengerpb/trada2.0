@@ -11,8 +11,10 @@
 			<% }) %>
 		</ul>
 	<% } %>
-	<% if(message) { %>
-		<%= message %>
+	<% if(flash.signupMsgs) { %>
+		<ul>
+			<li> <%= flash.signupMsgs %> </li>
+		</ul>
 	<% } %>
 	<form method="POST" action="/register">
 		<label>User name</label>

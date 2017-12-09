@@ -1,10 +1,10 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const path = require("path");
-const expressSession = require('express-session');
-const flash = require('connect-flash');
-// const mongojs = require("mongojs");
-const expressValidator = require("express-validator");
+let express = require("express");
+let bodyParser = require("body-parser");
+let path = require("path");
+let expressSession = require('express-session');
+let cookieParser = require('cookie-parser');
+let flash = require('express-flash-2');
+let expressValidator = require("express-validator");
 
 let index = require("./routes/index");
 let profile = require("./routes/profile");
@@ -22,6 +22,9 @@ app.use(express.static(path.join(__dirname, 'client')));
 //body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+//cookie parser
+app.use(cookieParser('secret'));
 
 //session handling
 app.use(expressSession({
@@ -48,12 +51,13 @@ app.use(expressValidator({
 			value: value
 		}
 	}
-}));	
+}));
 
 //global variable
-app.use(function(req, res, next){
+app.use((req, res, next) => {
 	res.locals.errors = null;
-	res.locals.message = req.flash('message');
+	// res.locals.signupMsgs = res.flash('signupMsg');
+	// res.locals.editMsgs = res.flash('editMsgs');
 	next();
 });
 

@@ -5,8 +5,10 @@
 </head>
 <body>
 	<h1>Trada | Edit Profile</h1>
-	<% if(message) { %>
-		<%= message %>
+	<% if(flash.editMsgs) { %>
+		<ul>
+			<li> <%= flash.editMsgs %> </li>
+		</ul>
 	<% } %>
 	<form method="POST", action="/profile/<%= user._id %>/edit">
 		<% if(user.fullname) { %>
@@ -19,7 +21,7 @@
 		<a href="/profile/<%= user._id %>"><input type="button" name="back" value="Back"></a>
 		<input type="submit" name="submit" value="Save">
 		<% if(user.user_type == 'Normal') { %>
-			<a href="/profile/<%= user._id %>/edit/new_pwd"><input type="button" name="change_pass" value="Change password"></a> 
+			<a href="/profile/<%= user._id %>/edit/new_pwd"><input type="button" name="change_pass" value="Change password"></a>
 		<% } %>
 	</form>
 </body>
