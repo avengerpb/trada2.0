@@ -11,6 +11,11 @@
 			<% }) %>
 		</ul>
 	<% } %>
+	<% if(flash.loginMsgs) { %>
+		<ul>
+			<li> <%= flash.loginMsgs %> </li>
+		</ul>
+	<% } %>
 	<form method="POST" action="/login">
 		<label>Email or Username</label>
 		<input type="text" name="email_uname">

@@ -99,13 +99,15 @@ router.post('/login', (req, res) => {
 		}, (err, user) => {
 			if(err) throw err;
 			if(!user) {
+				res.flash("loginMsgs", "User doesn't exist!");
 				console.log("User doesn't exist");
-				res.redirect('/');
+				res.redirect('/login');
 			} else {
 				let checkPass = bcrypt.compareSync(req.body.password, user.password);
 				if(checkPass == false){
+					res.flash('loginMsgs', 'Incorrect password!');
 					console.log('Wrong password!');
-					res.redirect('/');
+					res.redirect('/login');
 				} else {
 					console.log('Logged in');
 					session = req.session;
@@ -143,6 +145,7 @@ router.post('/register', (req, res) => {
 		});
 	} else {
 		let newUser = {
+			fullname: '',
 			username: req.body.username,
 			email: req.body.email,
 			password: hash,
@@ -160,7 +163,7 @@ router.post('/register', (req, res) => {
 					if(err) { throw err; }
 					console.log('Registration succeed!');
 					res.flash('signupMsgs', 'Registration succeed!');
-					res.redirect('/');
+					res.redirect('/register');
 				});
 			} else {
 				if(user.username == req.body.username) {
