@@ -9,8 +9,10 @@ let expressValidator = require("express-validator");
 let index = require("./routes/index");
 let profile = require("./routes/profile");
 let market = require("./routes/market");
+let cors = require('cors');
 let app = express();
 app.set('port', (process.env.PORT || 8000));
+app.use(cors());
 
 //view engine
 app.set('view engine', 'ejs');

@@ -45,7 +45,7 @@ router.post('/add_item', (req, res) => {
       if(err) { throw err; }
       res.redirect('/market');
     });
-    }
+  }
 });
 //END ADD_ITEM
 
@@ -83,7 +83,5 @@ router.post('/delete_item', (req, res) => {
       res.redirect('/market');
     });
 });
-
-
 
 module.exports = router;

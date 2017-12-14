@@ -82,39 +82,38 @@ router.get('/login', (req, res, next) => {
 });
 
 router.post('/login', (req, res) => {
-	req.checkBody('email_uname', 'Email or Username is required').notEmpty();
-	req.checkBody('password', 'Password is required').notEmpty();
-
-	let errors = req.validationErrors();
-	if(errors) {
-		res.render('login.html', {
-			errors: errors
-		});
-	} else {
-		db.User.findOne({
-			$or: [
-				{'email': req.body.email_uname},
-				{'username': req.body.email_uname}
-			]
-		}, (err, user) => {
-			if(err) throw err;
-			if(!user) {
-				console.log("User doesn't exist");
-				res.redirect('/');
+	db.User.findOne({
+		$or: [
+			{'email': req.body.email_uname},
+			{'username': req.body.email_uname}
+		]
+	}, (err, user) => {
+		if(err) throw err;
+		if(!user) {
+			res.json({success: false, msg: "User doesn't exist!"});
+			console.log("User doesn't exist");
+		} else {
+			let checkPass = bcrypt.compareSync(req.body.password, user.password);
+			if(checkPass == false){
+				res.json({success: false, msg: 'Incorect password'});
+				console.log('Wrong password!');
 			} else {
-				let checkPass = bcrypt.compareSync(req.body.password, user.password);
-				if(checkPass == false){
-					console.log('Wrong password!');
-					res.redirect('/');
-				} else {
-					console.log('Logged in');
-					session = req.session;
-					session.user = user;
-					res.redirect('/');
-				}
+				console.log('Logged in');
+				session = req.session;
+				session.user = user;
+				res.json({
+					success: true,
+					msg: 'You are logged in',
+					user: {
+						id: user._id,
+						fullname: user.fullname,
+						username: user.username,
+						email: user.email
+					}
+				});
 			}
-		});
-	}
+		}
+	});
 });
 //END LOCAL LOGIN
 
@@ -126,56 +125,41 @@ router.get('/register', (req, res, next) => {
 });
 
 router.post('/register', (req, res) => {
-	req.checkBody('username', 'User name is required').notEmpty();
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('email', 'This email is not valid').isEmail();
-	req.checkBody('password', 'Password is required').notEmpty();
-	req.assert('cpassword', 'Passwords do not match').equals(req.body.password);
-
 	// let bcrypt = require('bcryptjs');
 	let salt = bcrypt.genSaltSync(10);
 	let hash = bcrypt.hashSync(req.body.password, salt);
 
-	let errors = req.validationErrors();
-	if(errors) {
-		res.render('register.html', {
-			errors: errors
-		});
-	} else {
-		let newUser = {
-			username: req.body.username,
-			email: req.body.email,
-			password: hash,
-			user_type: 'Normal'
-		}
-		db.User.findOne({
-			$or: [
-				{'username': req.body.username},
-				{'email': req.body.email}
-			]
-		}, (err, user) => {
-			if(err) throw err;
-			if(!user) {
-				db.User.insert(newUser, (err, user) => {
-					if(err) { throw err; }
-					console.log('Registration succeed!');
-					res.flash('signupMsgs', 'Registration succeed!');
-					res.redirect('/');
-				});
-			} else {
-				if(user.username == req.body.username) {
-					console.log('This username has already existed!');
-					res.flash('signupMsgs', 'This username has already existed!');
-					res.redirect('/register');
-				}
-				if(user.email == req.body.email){
-					console.log('This email has already existed!');
-					res.flash('signupMsgs', 'This email has already existed!');
-					res.redirect('/register');
-				}
-			}
-		});
+	let newUser = {
+		fullname: req.body.fullname,
+		username: req.body.username,
+		email: req.body.email,
+		password: hash,
+		user_type: 'Normal'
 	}
+	db.User.findOne({
+		$or: [
+			{'username': req.body.username},
+			{'email': req.body.email}
+		]
+	}, (err, user) => {
+		if(err) throw err;
+		if(!user) {
+			db.User.insert(newUser, (err, user) => {
+				if(err) { throw err; }
+				console.log('Registration succeed!');
+				res.json({success: true, msg: 'User registered successfully'});
+			});
+		} else {
+			if(user.username == req.body.username) {
+				console.log('This username has already existed!');
+				res.json({success: false, msg: 'This username has already existed!'});
+			}
+			if(user.email == req.body.email){
+				console.log('This email has already existed!');
+				res.json({success: false, msg: 'This email has already existed!'});
+			}
+		}
+		});
 });
 //END USER REGISTER
 
