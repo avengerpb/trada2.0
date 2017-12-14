@@ -128,57 +128,41 @@ router.get('/register', (req, res, next) => {
 });
 
 router.post('/register', (req, res) => {
-	req.checkBody('username', 'User name is required').notEmpty();
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('email', 'This email is not valid').isEmail();
-	req.checkBody('password', 'Password is required').notEmpty();
-	req.assert('cpassword', 'Passwords do not match').equals(req.body.password);
-
 	// let bcrypt = require('bcryptjs');
 	let salt = bcrypt.genSaltSync(10);
 	let hash = bcrypt.hashSync(req.body.password, salt);
 
-	let errors = req.validationErrors();
-	if(errors) {
-		res.render('register.html', {
-			errors: errors
-		});
-	} else {
-		let newUser = {
-			fullname: '',
-			username: req.body.username,
-			email: req.body.email,
-			password: hash,
-			user_type: 'Normal'
-		}
-		db.User.findOne({
-			$or: [
-				{'username': req.body.username},
-				{'email': req.body.email}
-			]
-		}, (err, user) => {
-			if(err) throw err;
-			if(!user) {
-				db.User.insert(newUser, (err, user) => {
-					if(err) { throw err; }
-					console.log('Registration succeed!');
-					res.flash('signupMsgs', 'Registration succeed!');
-					res.redirect('/register');
-				});
-			} else {
-				if(user.username == req.body.username) {
-					console.log('This username has already existed!');
-					res.flash('signupMsgs', 'This username has already existed!');
-					res.redirect('/register');
-				}
-				if(user.email == req.body.email){
-					console.log('This email has already existed!');
-					res.flash('signupMsgs', 'This email has already existed!');
-					res.redirect('/register');
-				}
-			}
-		});
+	let newUser = {
+		fullname: req.body.fullname,
+		username: req.body.username,
+		email: req.body.email,
+		password: hash,
+		user_type: 'Normal'
 	}
+	db.User.findOne({
+		$or: [
+			{'username': req.body.username},
+			{'email': req.body.email}
+		]
+	}, (err, user) => {
+		if(err) throw err;
+		if(!user) {
+			db.User.insert(newUser, (err, user) => {
+				if(err) { throw err; }
+				console.log('Registration succeed!');
+				res.json({success: true, msg: 'User registered successfully'});
+			});
+		} else {
+			if(user.username == req.body.username) {
+				console.log('This username has already existed!');
+				res.json({success: false, msg: 'This username has already existed!'});
+			}
+			if(user.email == req.body.email){
+				console.log('This email has already existed!');
+				res.json({success: false, msg: 'This email has already existed!'});
+			}
+		}
+		});
 });
 //END USER REGISTER
 
