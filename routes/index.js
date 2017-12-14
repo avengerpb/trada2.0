@@ -82,41 +82,38 @@ router.get('/login', (req, res, next) => {
 });
 
 router.post('/login', (req, res) => {
-	req.checkBody('email_uname', 'Email or Username is required').notEmpty();
-	req.checkBody('password', 'Password is required').notEmpty();
-
-	let errors = req.validationErrors();
-	if(errors) {
-		res.render('login.html', {
-			errors: errors
-		});
-	} else {
-		db.User.findOne({
-			$or: [
-				{'email': req.body.email_uname},
-				{'username': req.body.email_uname}
-			]
-		}, (err, user) => {
-			if(err) throw err;
-			if(!user) {
-				res.flash("loginMsgs", "User doesn't exist!");
-				console.log("User doesn't exist");
-				res.redirect('/login');
+	db.User.findOne({
+		$or: [
+			{'email': req.body.email_uname},
+			{'username': req.body.email_uname}
+		]
+	}, (err, user) => {
+		if(err) throw err;
+		if(!user) {
+			res.json({success: false, msg: "User doesn't exist!"});
+			console.log("User doesn't exist");
+		} else {
+			let checkPass = bcrypt.compareSync(req.body.password, user.password);
+			if(checkPass == false){
+				res.json({success: false, msg: 'Incorect password'});
+				console.log('Wrong password!');
 			} else {
-				let checkPass = bcrypt.compareSync(req.body.password, user.password);
-				if(checkPass == false){
-					res.flash('loginMsgs', 'Incorrect password!');
-					console.log('Wrong password!');
-					res.redirect('/login');
-				} else {
-					console.log('Logged in');
-					session = req.session;
-					session.user = user;
-					res.redirect('/');
-				}
+				console.log('Logged in');
+				session = req.session;
+				session.user = user;
+				res.json({
+					success: true,
+					msg: 'You are logged in',
+					user: {
+						id: user._id,
+						fullname: user.fullname,
+						username: user.username,
+						email: user.email
+					}
+				});
 			}
-		});
-	}
+		}
+	});
 });
 //END LOCAL LOGIN
 

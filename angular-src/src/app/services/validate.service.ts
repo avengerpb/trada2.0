@@ -25,4 +25,9 @@ export class ValidateService {
     if(password == cpassword) return true;
     else return false;
   }
+
+  validateLogin(user){
+    if(user.email_uname == undefined || user.password == undefined) return false;
+    else return true;
+  }
 }

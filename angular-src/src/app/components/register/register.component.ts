@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegisterSubmit(){
-    const user = {
+    let user = {
       fullname: this.fullname,
       username: this.username,
       email: this.email,

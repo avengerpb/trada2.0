@@ -15,4 +15,21 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  loginUser(user) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:8000/login', user, {headers: headers})
+      .map(res => res.json());
+  }
+
+  storeUserData(user) {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.user = user;
+  }
+
+  logout(){
+    this.user = null;
+    localStorage.clear();
+  }
+
 }
