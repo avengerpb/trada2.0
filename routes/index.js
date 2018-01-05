@@ -4,19 +4,20 @@ let passport = require('passport');
 let FbStrategy = require('passport-facebook').Strategy;
 let mongojs = require('mongojs');
 let bcrypt = require('bcryptjs');
+let jwt = require('jsonwebtoken');
 
 let db = mongojs('mongodb://sieunhan:trada1234@ds127978.mlab.com:27978/trada', ['User']);
 let session;
 
 //FACEBOOK LOGIN
-let FACEBOOK_APP_ID ='1943048642627190',
-	FACEBOOK_APP_SECRET = '348d34c6bff7b6077e455d474142deeb';
+let FACEBOOK_APP_ID ='1943048642627190';
+let FACEBOOK_APP_SECRET = '348d34c6bff7b6077e455d474142deeb';
 
 let fbOption = {
 	'clientID': FACEBOOK_APP_ID,
 	'clientSecret': FACEBOOK_APP_SECRET,
 	'callbackURL': 'http://localhost:8000/auth/facebook/callback',
-	'profileFields': ['id', 'displayName', 'photos', 'emails', 'profileUrl']
+	'profileFields': ['id', 'displayName', 'picture.type(large)', 'emails', 'profileUrl']
 };
 
 passport.serializeUser(function(user, cb) {
@@ -26,10 +27,6 @@ passport.serializeUser(function(user, cb) {
 passport.deserializeUser(function(obj, cb) {
   cb(null, obj);
 });
-
-
-router.use(passport.initialize());
-router.use(passport.session());
 
 
 let fbCallback = (accessToken, refreshToken, profile, cb) => {
@@ -99,10 +96,14 @@ router.post('/login', (req, res) => {
 				console.log('Wrong password!');
 			} else {
 				console.log('Logged in');
-				session = req.session;
-				session.user = user;
+				// session = req.session;
+				// session.user = user;
+				const token = jwt.sign(user, 'secret', {
+					expiresIn: 604800 //1 week
+				});
 				res.json({
 					success: true,
+					token: 'JWT '+token,
 					msg: 'You are logged in',
 					user: {
 						id: user._id,
@@ -123,6 +124,12 @@ router.get('/register', (req, res, next) => {
 	// console.log(req.session);
     res.render('register.html');
 });
+
+// router.get('/register', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+// 	// console.log(req.session);
+//     // res.render('register.html');
+// 		res.json({user: req.user});
+// });
 
 router.post('/register', (req, res) => {
 	// let bcrypt = require('bcryptjs');

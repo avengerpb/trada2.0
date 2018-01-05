@@ -5,6 +5,7 @@ let expressSession = require('express-session');
 let cookieParser = require('cookie-parser');
 let flash = require('express-flash-2');
 let expressValidator = require("express-validator");
+let passport = require('passport');
 
 let index = require("./routes/index");
 let profile = require("./routes/profile");
@@ -28,6 +29,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 //cookie parser
 app.use(cookieParser('secret'));
+
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+require("./config/passport")(passport);
 
 //session handling
 app.use(expressSession({

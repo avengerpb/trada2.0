@@ -17,6 +17,10 @@ let isLoggedIn = (req, res, next) => {
 
 
 //PROFILE PAGE
+router.get('/', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+	res.json({user: req.user});
+})
+
 router.get('/:id', isLoggedIn, (req, res, next) => {
 	// console.log(req.session);
 	db.User.findOne({
