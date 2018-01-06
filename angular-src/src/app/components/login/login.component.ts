@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(user).subscribe(data => {
       if(data.success){
         console.log(data);
-        this.authService.storeUserData(data.user);
+        this.authService.storeUserData(data.token, data.user);
         this._flashMessages.show(data.msg, {cssClass: 'alert-success'});
         this.router.navigate(['/']);
       } else {
